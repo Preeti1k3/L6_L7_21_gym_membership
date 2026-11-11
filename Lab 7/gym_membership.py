@@ -1,16 +1,67 @@
 
+import math
+
+
 def parse_plan(code):
-    plan, months = code.split('-')
-    return plan.upper(), int(months)
+    if not isinstance(code, str):
+        return None
+
+    parts = code.split('-')
+
+    if len(parts) != 2:
+        return None
+
+    plan, months = parts
+
+    if not plan.strip() or not months.isdigit():
+        return None
+
+    months = int(months)
+
+    if months <= 0:
+        return None
+
+    return plan.upper(), months
 
 
 def calculate_bmi(data):
-    weight, height = data.split(',')
-    return round(float(weight) / (float(height) ** 2), 1)
+    if not isinstance(data, str):
+        return None
+
+    parts = data.split(',')
+
+    if len(parts) != 2:
+        return None
+
+    try:
+        weight = float(parts[0])
+        height = float(parts[1])
+    except ValueError:
+        return None
+
+    if not math.isfinite(weight) or not math.isfinite(height):
+        return None
+
+    if weight <= 0 or height <= 0:
+        return None
+
+    return round(weight / (height ** 2), 1)
 
 
 def average_workout(minutes):
-    values = [int(m) for m in minutes.split()]
+    if not isinstance(minutes, str):
+        return None
+
+    values = minutes.split()
+
+    if not values:
+        return None
+
+    if not all(value.isdigit() for value in values):
+        return None
+
+    values = [int(value) for value in values]
+
     return sum(values) // len(values)
 
 
